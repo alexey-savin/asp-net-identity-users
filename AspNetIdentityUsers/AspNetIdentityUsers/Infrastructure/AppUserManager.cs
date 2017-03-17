@@ -29,11 +29,7 @@ namespace AspNetIdentityUsers.Infrastructure
                 RequireUppercase = true
             };
 
-            manager.UserValidator = new CustomUserValidator(manager)
-            {
-                AllowOnlyAlphanumericUserNames = true,
-                RequireUniqueEmail = true
-            };
+            manager.UserValidator = new CustomUserValidator();
 
             return manager;
         }
