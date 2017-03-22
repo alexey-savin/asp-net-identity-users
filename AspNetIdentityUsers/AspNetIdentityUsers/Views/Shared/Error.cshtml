@@ -1,0 +1,28 @@
+﻿@model IEnumerable<string>
+
+@{
+    ViewBag.Title = "Ошибка";
+}
+
+<div class="alert alert-danger">
+    @switch (Model.Count())
+    {
+        case 0:
+            @: Something went wrong. Please, try agail later!
+            break;
+        case 1:
+            @Model.First();
+            break;
+        default:
+            @: Following errors has been oocured:
+            <ul>
+                @foreach (var err in Model)
+                {
+                    <li>@err</li>
+                }
+            </ul>
+            break;
+    }
+</div>
+@Html.ActionLink("OK", "Index", null, new { @class = "btn btn-default" })
+
