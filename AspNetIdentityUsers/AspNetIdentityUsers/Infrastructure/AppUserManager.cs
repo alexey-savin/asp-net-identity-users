@@ -22,7 +22,7 @@ namespace AspNetIdentityUsers.Infrastructure
                 RequireNonLetterOrDigit = false,
                 RequireDigit = false,
                 RequireLowercase = true,
-                RequireUppercase = true
+                RequireUppercase = false
             };
 
             manager.UserValidator = new CustomUserValidator();
