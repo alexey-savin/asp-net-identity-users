@@ -19,6 +19,11 @@ namespace AspNetIdentityUsers.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
+            if (HttpContext.User.Identity.IsAuthenticated)
+            {
+                return View("Error", new[] { "Access denied" });
+            }
+
             ViewBag.returnUrl = returnUrl;
             return View();
         }
@@ -50,20 +55,14 @@ namespace AspNetIdentityUsers.Controllers
             return View(details);
         }
 
-        private IAuthenticationManager AuthManager
+        public ActionResult Logout()
         {
-            get
-            {
-                return HttpContext.GetOwinContext().Authentication;
-            }
+            AuthManager.SignOut();
+            return RedirectToAction("Index", "Home");
         }
 
-        private AppUserManager UserManager
-        {
-            get
-            {
-                return HttpContext.GetOwinContext().GetUserManager<AppUserManager>();
-            }
-        }
+        private IAuthenticationManager AuthManager => HttpContext.GetOwinContext().Authentication;
+
+        private AppUserManager UserManager => HttpContext.GetOwinContext().GetUserManager<AppUserManager>();
     }
 }
