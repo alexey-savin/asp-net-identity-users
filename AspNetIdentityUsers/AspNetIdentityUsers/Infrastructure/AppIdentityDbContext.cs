@@ -1,10 +1,7 @@
 ﻿using AspNetIdentityUsers.Models;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Data.Entity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace AspNetIdentityUsers.Infrastructure
 {
@@ -14,7 +11,7 @@ namespace AspNetIdentityUsers.Infrastructure
 
         static AppIdentityDbContext()
         {
-            Database.SetInitializer<AppIdentityDbContext>(new IdentityDbInit());
+            Database.SetInitializer(new IdentityDbInit());
         }
 
         public static AppIdentityDbContext Create()
@@ -33,7 +30,30 @@ namespace AspNetIdentityUsers.Infrastructure
 
         public void PerformInitialSetup(AppIdentityDbContext context)
         {
-            // Configuration setting here
+            AppUserManager userMgr = new AppUserManager(new UserStore<AppUser>(context));
+            AppRoleManager roleMgr = new AppRoleManager(new RoleStore<AppRole>(context));
+
+            string roleName = "Administrators";
+            string userName = "Admin";
+            string password = "admpwd";
+            string email = "admin@mymail.com";
+
+            if (!roleMgr.RoleExists(roleName))
+            {
+                roleMgr.Create(new AppRole(roleName));
+            }
+
+            AppUser user = userMgr.FindByName(userName);
+            if (user == null)
+            {
+                userMgr.Create(new AppUser { UserName = userName, Email = email }, password);
+                user = userMgr.FindByName(userName);
+            }
+
+            if (!userMgr.IsInRole(user.Id, roleName))
+            {
+                userMgr.AddToRole(user.Id, roleName);
+            }
         }
     }
 }

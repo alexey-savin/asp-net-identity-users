@@ -2,8 +2,6 @@
 using AspNetIdentityUsers.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,6 +10,7 @@ using System.Web.Mvc;
 
 namespace AspNetIdentityUsers.Controllers
 {
+    [Authorize(Roles = "Administrators")]
     public class RoleAdminController : Controller
     {
         private AppUserManager UserManager => HttpContext.GetOwinContext().GetUserManager<AppUserManager>();

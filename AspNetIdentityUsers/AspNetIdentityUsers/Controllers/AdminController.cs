@@ -11,9 +11,9 @@ using Microsoft.AspNet.Identity;
 
 namespace AspNetIdentityUsers.Controllers
 {
+    [Authorize(Roles = "Administrators")]
     public class AdminController : Controller
     {
-        // GET: Admin
         public ActionResult Index()
         {
             return View(UserManager.Users);
