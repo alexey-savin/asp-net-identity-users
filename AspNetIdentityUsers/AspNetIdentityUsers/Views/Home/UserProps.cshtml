@@ -1,0 +1,38 @@
+﻿@using AspNetIdentityUsers.Controllers
+@using System.Linq
+@using AspNetIdentityUsers.Models
+@model AppUser
+
+@{
+    ViewBag.Title = "User Properties";
+}
+
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        User Properties
+    </div>
+    <table class="table table-striped">
+        <tr><th>Current City</th><td>@HomeController.GetCityName(Model.City)</td></tr>
+    </table>
+</div>
+
+@using (Html.BeginForm())
+{
+    <div class="form-group">
+        <label>City: </label>
+        @Html.DropDownListFor(x => x.City, new SelectList(
+            Enum.GetValues(typeof(Cities))
+            .OfType<Cities>()
+            .Select(c =>
+            {
+                return new
+                {
+                    Id = c,
+                    Text = HomeController.GetCityName(c)
+                };
+            }),
+            "Id", "Text"))
+    </div>
+    <button class="btn btn-primary" type="submit">Save</button>
+}
+
